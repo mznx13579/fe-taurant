@@ -1,4 +1,4 @@
-export function question(value, maxDecimalLength) {
+function question(value, maxDecimalLength) {
   // 소수점(.) 기준으로 문자열을 잘라 앞 부분은 자연수(naturalNumber), 뒷 부분(decimalNumber)은 소수 영역으로 고려합니다.
   // ex) value가 23.45인 경우 naturalNumber = '23', decimalNumber = '45'
   const [ naturalNumber, decimalNumber ] = value.split('.');
@@ -11,12 +11,29 @@ export function question(value, maxDecimalLength) {
     const reformatDecimal = decimal || '';
     
     // TODO: 소수점 이하 영역을 구성하는 나머지 부분을 완성해주세요.(필수)
+    const substringDecimal = reformatDecimal.substring(0, maxDecimalLength);
+
+    const { length } = substringDecimal;
+    
+    const arr = Array.from({length: maxDecimalLength-length}, () => '0');
+
+    return length === maxDecimalLength ? substringDecimal : substringDecimal + arr.join('');
   }
 
   // maxDecimalLength가 0인 경우 소수점을 표시할 필요가 없으므로 소수 영역은 빈 문자열로 설정합니다.
   const decimal = !!maxDecimalLength ? generateDecimalPart(decimalNumber) : '';
 
-  return `${naturalNumber}${decimal}`;
+  return decimal ? `${naturalNumber}.${decimal}` : naturalNumber;
 }
 
 // TODO: 추가 내용에 나와 있는대로 본인이 새롭게 만든 question 함수를 아래에 작성해주세요. (선택사항)
+console.log(question('789', 3));
+console.log(question('789', 0));
+console.log(question('456.123', 1));
+console.log(question('123.456', 1));
+console.log(question('123.456', 3));
+console.log(question('123.456', 5));
+console.log(question('123.456', 0));
+console.log(question('1234567890.12345', 0));
+console.log(question('0', 0));
+console.log(question('0', 4));
